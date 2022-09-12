@@ -1,2 +1,69 @@
 @import './common';
 @import './example';
+p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 0;
+    }
+    ul,ol{
+      margin: 0;
+      padding-left: 0;
+    }
+    body{background-color: aqua;}
+  img {
+        display: block;
+        height: 100%;
+        width: 100%;
+        object-fit:cover;
+        
+      }
+    .img-container{
+      height: 200px ;
+  
+    }
+.link {
+  text-decoration: none;
+}
+.list {
+  list-style: none;
+}
+.container {
+    width: 1200px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: 0 auto;
+  }
+.gallery{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.photo-card {
+    flex-basis:calc(100%/4 - 50px);
+     margin: 15px
+   }
+   .search-form{
+    padding: 15px;
+    background-color: blue;
+    display: flex;
+  justify-content: center;
+   }
+   .info{
+    display: flex;
+    justify-content: space-between;
+   }
+   .info-item{
+    font-size: 14;
+    text-align: center;
+   }
+   .load-more{
+   margin: 0 auto;
+   display: block;
+   }
+.display-none{
+     display: none;
+}
