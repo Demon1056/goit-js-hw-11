@@ -1,7 +1,6 @@
 import axios from 'axios'
-
 import {createTemplateImage,renderImages, resetHtml} from './createHTML'
-import { showButton, hideButton, showNotifyError } from './interface';
+import { showButton, hideButton, showNotifyError,findLastImage, numberImages } from './interface';
 export const form = document.querySelector('#search-form')
 export const loadMoreButton = document.querySelector('.load-more')
 const BASEURL='https://pixabay.com/api/'
@@ -13,28 +12,35 @@ let requestParams = {params:{
   page:1,
   per_page:40
   }}
-let findValue='';
+export let findValue='';
   form.addEventListener('input', searchValueImage)
 
   function searchValueImage (event){ 
     return requestParams.params.q=event.target.value}
- export function startSeach(event) {
+ 
+  export function startSeach(event) {
  event.preventDefault()
  checkFindValue()
     axios.get(BASEURL, requestParams)
+    
     .then(getData)
     .then(createTemplateImage)
     .then(renderImages)
-    .catch(error=>console.log(error))
-    .finally(()=>{console.log(requestParams.params.page)} )
+    .catch(error=>{ findLastImage (error)
+      console.log(error)
     }
+    )
+ }
    
     function getData(response){
         const images = response.data.hits
+      const  number=response.data.totalHits;
         if(images.length===0){ 
           showNotifyError() 
-          return
-        } showButton(loadMoreButton)
+          return} 
+         showButton(loadMoreButton)
+         if (requestParams.params.page===1){numberImages(number)}
+
       return images} 
        
  
@@ -48,3 +54,5 @@ let findValue='';
         requestParams.params.page+=1 }
     
       
+
+    
