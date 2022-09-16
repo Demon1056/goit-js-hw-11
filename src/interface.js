@@ -11,12 +11,17 @@ export function showButton (button){
         return Notify.failure("Sorry, there are no images matching your search query. Please try again." )
      }
 
-     export function findLastImage (error){
-      if(error.response.status===400){
-         showNotifyLastImage ()
-         hideButton (loadMoreButton)
-      }
-    }
+     export function findLastImage (response){
+      const images = response.data.hits
+      const  number=response.data.totalHits;
+        if (number && !images[0]){
+          showNotifyLastImage ()
+          hideButton (loadMoreButton)
+        }
+         return response
+       }
+        
+    
 
     function showNotifyLastImage (){
       Notify.failure("We're sorry, but you've reached the end of search results.")

@@ -1,6 +1,6 @@
 
    const imagesContainer = document.querySelector('.gallery')
-   import SimpleLightbox from 'simplelightbox';
+  
    import "simplelightbox/dist/simple-lightbox.min.css";
    export function createTemplateImage (images){let templateImage;  return templateImage = images.map(
       ({webformatURL,tags,likes,views,comments,downloads, largeImageURL}=image)=>{;  
@@ -28,13 +28,12 @@
     }).join('') 
     }
     export function renderImages (templateImage){
+      
         imagesContainer.insertAdjacentHTML("beforeend", templateImage)
        
-        let gallery = new SimpleLightbox('.gallery a')
-        gallery.refresh()
-      }  
+        
+        }  
 
       export function resetHtml () {return imagesContainer.innerHTML=''
  }
- 
- 
+

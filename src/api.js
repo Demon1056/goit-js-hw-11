@@ -1,8 +1,10 @@
 import axios from 'axios'
+import SimpleLightbox from 'simplelightbox';
 import {createTemplateImage,renderImages, resetHtml} from './createHTML'
 import { showButton, hideButton, showNotifyError,findLastImage, numberImages } from './interface';
 export const form = document.querySelector('#search-form')
 export const loadMoreButton = document.querySelector('.load-more')
+let gallery;
 const BASEURL='https://pixabay.com/api/'
 let requestParams = {params:{
   key: '29803921-0264c7261e6b7092956a87835', 
@@ -21,12 +23,15 @@ export let findValue='';
   export function startSeach(event) {
  event.preventDefault()
  checkFindValue()
-    axios.get(BASEURL, requestParams)
-    
+ if(!findValue){return};
+  axios.get(BASEURL, requestParams)
+  .then(findLastImage)
     .then(getData)
     .then(createTemplateImage)
     .then(renderImages)
-    .catch(error=>{ findLastImage (error)
+    .then(()=>{gallery = new SimpleLightbox('.gallery a')
+    })
+    .catch(error=>{  
       console.log(error)
     }
     )
@@ -35,16 +40,16 @@ export let findValue='';
     function getData(response){
         const images = response.data.hits
       const  number=response.data.totalHits;
-        if(images.length===0){ 
+        if(images.length===0 && number===0){ 
           showNotifyError() 
-          return} 
-         showButton(loadMoreButton)
+         return }  
+         else {showButton(loadMoreButton)
          if (requestParams.params.page===1){numberImages(number)}
-
-      return images} 
+return images}  } 
        
  
     function checkFindValue (){
+    
         if (findValue!==requestParams.params.q){
             resetHtml ()
             hideButton(loadMoreButton)
@@ -55,4 +60,3 @@ export let findValue='';
     
       
 
-    
