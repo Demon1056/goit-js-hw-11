@@ -1,7 +1,7 @@
 import axios from 'axios'
 import SimpleLightbox from 'simplelightbox';
 import {createTemplateImage,renderImages, resetHtml} from './createHTML'
-import { showButton, hideButton, showNotifyError,findLastImage, numberImages } from './interface';
+import { showButton, hideButton, showNotifyError,findLastImage, numberImages,findLastPage } from './interface';
 export const form = document.querySelector('#search-form')
 export const loadMoreButton = document.querySelector('.load-more')
 let gallery;
@@ -20,21 +20,19 @@ export let findValue='';
   function searchValueImage (event){ 
     return requestParams.params.q=event.target.value}
  
-  export function startSeach(event) {
+  export async function  startSeach(event) {
+    try{
  event.preventDefault()
- checkFindValue()
+ await checkFindValue()
  if(!findValue){return};
-  axios.get(BASEURL, requestParams)
-  .then(findLastImage)
-    .then(getData)
-    .then(createTemplateImage)
-    .then(renderImages)
-    .then(()=>{gallery = new SimpleLightbox('.gallery a')
-    })
-    .catch(error=>{  
-      console.log(error)
-    }
-    )
+  const response = await axios.get(BASEURL, requestParams)
+  const data= await getData(response)
+  await findLastImage(response)
+    const marckup = await createTemplateImage(data)
+    const allPage = await renderImages (marckup)
+   makeGallery(allPage)}
+    catch (error) { findLastPage(error)
+    console.log(error);
  }
    
     function getData(response){
@@ -54,9 +52,13 @@ return images}  }
             resetHtml ()
             hideButton(loadMoreButton)
             requestParams.params.page=1
+
            return findValue=requestParams.params.q
-        }    
+        }   
         requestParams.params.page+=1 }
+      }
     
       
+function makeGallery (page) {return gallery = new SimpleLightbox('.gallery a')}
+
 

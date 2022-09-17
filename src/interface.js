@@ -20,8 +20,13 @@ export function showButton (button){
         }
          return response
        }
-        
-    
+       
+       export function findLastPage (error) {
+        if (error.message==="Request failed with status code 400"){
+          showNotifyLastImage ()
+          hideButton (loadMoreButton)   
+       }
+      }
 
     function showNotifyLastImage (){
       Notify.failure("We're sorry, but you've reached the end of search results.")
